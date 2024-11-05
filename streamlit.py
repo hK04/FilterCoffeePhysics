@@ -31,7 +31,7 @@ with st.sidebar:
 if selected == "Экстракция":
     analyser = coffee_analysis(x=np.load('data/refractometry.nbpy'))
 
-    st.markdown('# Major coffee brewing analysis')
+    st.markdown('# Руководство по заварке кофе')
 
     st.markdown('#### Для расчета возможных вариантов экстракции необходимо загрузить калибровочные* данные')
 
@@ -74,7 +74,7 @@ if selected == "Экстракция":
     fig2.add_trace(
         px.scatter(pd.DataFrame({
                     'N, iteration' : np.arange(0, len(analyser.tds_from_refr()) + 1), 
-                    'EY, %' : np.concat([[0], analyser.mass_from_tds(bevarage=volume_it) / coffee_mass * 100]),
+                    'EY, %' : np.concatenate([[0], analyser.mass_from_tds(bevarage=volume_it) / coffee_mass * 100]),
                     }),
                    x = 'N, iteration',
                    y = 'EY, %').data[0],
@@ -85,7 +85,7 @@ if selected == "Экстракция":
     fig2.add_trace(
         px.line(pd.DataFrame({
                     'N, iteration' : np.arange(0, len(analyser.tds_from_refr()) + 1), 
-                    'EY, %' :  np.concat([[0], analyser.mass_from_tds(bevarage=volume_it) / coffee_mass * 100]),
+                    'EY, %' :  np.concatenate([[0], analyser.mass_from_tds(bevarage=volume_it) / coffee_mass * 100]),
                     }),
                    x = 'N, iteration',
                    y = 'EY, %').data[0],
@@ -99,7 +99,7 @@ if selected == "Экстракция":
     fig2.add_trace(
         px.scatter(pd.DataFrame({
                     'N, iteration' : np.arange(0, len(analyser.tds_from_refr()) + 1), 
-                    'TDS, %' : np.concat([[0], analyser.tds_integral()])
+                    'TDS, %' : np.concatenate([[0], analyser.tds_integral()])
                     }),
                    x = 'N, iteration',
                    y = 'TDS, %').data[0],
@@ -110,7 +110,7 @@ if selected == "Экстракция":
     fig2.add_trace(
         px.line(pd.DataFrame({
                     'N, iteration' : np.arange(0, len(analyser.tds_from_refr()) + 1), 
-                    'TDS, %' : np.concat([[0], analyser.tds_integral()])
+                    'TDS, %' : np.concatenate([[0], analyser.tds_integral()])
                     }),
                    x = 'N, iteration',
                    y = 'TDS, %').data[0],
@@ -142,6 +142,8 @@ if selected == "Экстракция":
             with column:
                 if 4 * row + i < n_flows :
                     flows[4*row + i] = st.number_input(f"Пролив №{4 * row + i + 1}", min_value=0, max_value=10, step=1, value=1)
+
+    coffe_auto_button = st.button('Авто')#, on_click=analyser.auto(bevarage=volume_it, coffee_mass=coffee_mass))
 
     #brewing_fig, brewing_ax = plot_brewing_chart() 
     x_point, y_point = analyser.estimate(flows, bevarage=volume_it, coffee_mass=coffee_mass)
